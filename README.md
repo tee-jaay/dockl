@@ -8,11 +8,12 @@ A Python EEL and React.js build Docker management app for Linux Distros.
 
 ### Prerequisites
 
-- A Linux distro operating system: [Ubuntu](https://ubuntu.com) etc.
-- [Python](https://www.python.org) v3 should be installed
-- [Docker](https://www.docker.com) should be installed, version 20.10.12 is used in this project
-- [Git](https://github.com/git-guides/install-git) should be installed (recommended v2.34.1 or higher)
-- [Node](https://nodejs.org) should be installed (recommended v16.17.0)
+- A Linux distro operating system: [Ubuntu](https://ubuntu.com) etc
+- [Python](https://www.python.org) v3 is required
+- [Docker](https://www.docker.com) is required (v20.10.12 used in this project)
+- [Git](https://github.com/git-guides/install-git) should be installed
+- [Node.js](https://nodejs.org) should be installed (v16.17.0 used in this project)
+- [Google chrome/Chromium](https://www.google.com/chrome/index.html) should be installed
 
 ### Clone the repo
 
