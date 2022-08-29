@@ -12,6 +12,7 @@ A Python EEL and React.js build Docker management app for Linux Distros.
 - [Python](https://www.python.org) v3 should be installed
 - [Docker](https://www.docker.com) should be installed, version 20.10.12 is used in this project
 - [Git](https://github.com/git-guides/install-git) should be installed (recommended v2.34.1 or higher)
+- [Node](https://nodejs.org) should be installed (recommended v16.17.0)
 
 ### Clone the repo
 
