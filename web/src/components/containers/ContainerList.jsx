@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Stack, Tooltip, Typography } from '@mui/material'
+import { Button, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,8 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import PlayIcon from '@mui/icons-material/PlayCircleFilledTwoTone';
 import StopIcon from '@mui/icons-material/StopCircleTwoTone';
 import DeleteIcon from '@mui/icons-material/HighlightOffTwoTone';
-import Layout from '../../layouts/Layout'
-import ComponentHeader from '../inc/ComponentHeader'
+import Layout from '../../layouts/Layout';
+import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
 import AlertError from '../inc/AlertError';
@@ -23,24 +23,32 @@ const ContainerList = () => {
 
     useEffect(() => {
         getContainerList();
-    }, [])
+    }, []);
 
     async function getContainerList() {
-        const res = await eel.get_container_list(DockerCommands.PASSWORD_SUDO, DockerCommands.CONTAINER_LIST)();
-        console.log(res)
-        setContainers(res.data);
+        try {
+            const res = await eel.get_container_list(DockerCommands.PASSWORD_SUDO, DockerCommands.CONTAINER_LIST)();
+            console.log(res);
+            setContainers(res.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleContainerStart = async (containerId) => {
         setIsLoading(true);
         setContainers([]);
-        if (containerId !== null) {
-            const command = `${DockerCommands.CONTAINER_START} ${containerId}`;
-            const password = DockerCommands.PASSWORD_SUDO;
-            const res = await eel.container_start(password, command)();
-            if (res[0] === containerId) {
-                console.log(res[0], "container start success");
+        const command = `${DockerCommands.CONTAINER_START} ${containerId}`;
+        const password = DockerCommands.PASSWORD_SUDO;
+        try {
+            if (containerId !== null) {
+                const res = await eel.container_start(password, command)();
+                if (res[0] === containerId) {
+                    console.log(res[0], "container start success");
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
         getContainerList();
         setIsLoading(false);
@@ -49,13 +57,17 @@ const ContainerList = () => {
     const handleContainerStop = async (containerId) => {
         setIsLoading(true);
         setContainers([]);
-        if (containerId !== null) {
-            const command = `${DockerCommands.CONTAINER_STOP} ${containerId}`;
-            const password = DockerCommands.PASSWORD_SUDO;
-            const res = await eel.container_stop(password, command)();
-            if (res[0] === containerId) {
-                console.log(res[0], "container stop success");
+        const command = `${DockerCommands.CONTAINER_STOP} ${containerId}`;
+        const password = DockerCommands.PASSWORD_SUDO;
+        try {
+            if (containerId !== null) {
+                const res = await eel.container_stop(password, command)();
+                if (res[0] === containerId) {
+                    console.log(res[0], "container stop success");
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
         getContainerList();
         setIsLoading(false);
@@ -64,13 +76,17 @@ const ContainerList = () => {
     const handleContainerDelete = async (containerId) => {
         setIsLoading(true);
         setContainers([]);
-        if (containerId !== null) {
-            const command = `${DockerCommands.CONTAINER_DELETE} ${containerId}`;
-            const password = DockerCommands.PASSWORD_SUDO;
-            const res = await eel.container_delete(password, command)();
-            if (res[0] === containerId) {
-                console.log(res[0], "container delete success");
+        const command = `${DockerCommands.CONTAINER_DELETE} ${containerId}`;
+        const password = DockerCommands.PASSWORD_SUDO;
+        try {
+            if (containerId !== null) {
+                const res = await eel.container_delete(password, command)();
+                if (res[0] === containerId) {
+                    console.log(res[0], "container delete success");
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
         getContainerList();
         setIsLoading(false);
@@ -127,7 +143,7 @@ const ContainerList = () => {
                 </Grid>
             }
         </Layout>
-    )
-}
+    );
+};
 
 export default ContainerList;

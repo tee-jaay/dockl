@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, Paper, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Tooltip, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ViewIcon from '@mui/icons-material/Preview';
 import DeleteIcon from '@mui/icons-material/HighlightOffTwoTone';
-import Layout from '../../layouts/Layout'
+import Layout from '../../layouts/Layout';
 import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import AlertError from '../inc/AlertError';
@@ -22,26 +22,34 @@ const VolumeList = () => {
 
     useEffect(() => {
         getVolumeList();
-    }, [])
+    }, []);
 
     async function getVolumeList() {
         setIsLoading(true);
-        const res = await eel.get_volume_list(DockerCommands.PASSWORD_SUDO, DockerCommands.VOLUME_LIST)();
-        console.log(res)
-        setVolumes(res.data);
+        try {
+            const res = await eel.get_volume_list(DockerCommands.PASSWORD_SUDO, DockerCommands.VOLUME_LIST)();
+            console.log(res);
+            setVolumes(res.data);
+        } catch (error) {
+            console.log(error);
+        }
         setIsLoading(false);
     }
 
     const handleVolumeDelete = async (volumeId) => {
         setIsLoading(true);
         setVolumes([]);
-        if (volumeId !== null) {
-            const command = `${DockerCommands.VOLUME_DELETE} ${volumeId}`;
-            const password = DockerCommands.PASSWORD_SUDO;
-            const res = await eel.volume_delete(password, command)();
-            if (res[0] === volumeId) {
-                console.log(res[0], "volume delete success");
+        const command = `${DockerCommands.VOLUME_DELETE} ${volumeId}`;
+        const password = DockerCommands.PASSWORD_SUDO;
+        try {
+            if (volumeId !== null) {
+                const res = await eel.volume_delete(password, command)();
+                if (res[0] === volumeId) {
+                    console.log(res[0], "volume delete success");
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
         getVolumeList();
         setIsLoading(false);
@@ -105,7 +113,7 @@ const VolumeList = () => {
 
             }
         </Layout>
-    )
-}
+    );
+};
 
 export default VolumeList;

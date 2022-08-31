@@ -22,17 +22,21 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
     const [imagesSummaries, setImagesSummaries] = React.useState([]);
     const [imagesCount, setImagesCount] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(null)
+    const [error, setError] = React.useState(null);
 
     const searchKeyword = async () => {
-        if (keyword.length > 3) {
-            setIsLoading(true);
-            let res = await eel.image_search(keyword)();
-            setImagesCount(res?.count);
-            setImagesSummaries(res?.summaries);
-            setIsLoading(false);
+        try {
+            if (keyword.length > 3) {
+                setIsLoading(true);
+                let res = await eel.image_search(keyword)();
+                setImagesCount(res?.count);
+                setImagesSummaries(res?.summaries);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
 
     return (
         <Dialog
@@ -92,7 +96,7 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
                 />
             }
         </Dialog>
-    )
-}
+    );
+};
 
-export default NewImage
+export default NewImage;
