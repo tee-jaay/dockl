@@ -27,7 +27,8 @@ const VolumeList = () => {
     async function getVolumeList() {
         setIsLoading(true);
         const res = await eel.get_volume_list(DockerCommands.PASSWORD_SUDO, DockerCommands.VOLUME_LIST)();
-        setVolumes(res);
+        console.log(res)
+        setVolumes(res.data);
         setIsLoading(false);
     }
 
@@ -45,8 +46,6 @@ const VolumeList = () => {
         getVolumeList();
         setIsLoading(false);
     };
-
-    console.log(volumes);
 
     return (
         <Layout>

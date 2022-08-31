@@ -33,30 +33,30 @@ const Dashboard = () => {
                     <Grid item xs={12}>
                         <Card sx={{ paddingX: '12px' }}>
                             <strong>Client:</strong> <br />
-                            Context:    {data?.ClientInfo?.Context} <br />
-                            Debug Mode:  {data?.ClientInfo?.Debug} <br />
+                            Context:    {data?.data?.ClientInfo?.Context} <br />
+                            Debug Mode:  {data?.data?.ClientInfo?.Debug} <br />
                             <br />
                             Server:<br />
-                            Containers: {data?.Containers}  <br />
-                            Running: {data?.ContainersRunning} <br />
-                            Paused:{data?.ContainersPaused}  <br />
-                            Stopped:{data?.ContainersStopped} <br />
-                            Images: {data?.Images}  <br />
-                            Server Version: {data?.ServerVersion}<br />
-                            Storage Driver: {data?.Driver} br<br />
+                            Containers: {data?.data?.Containers}  <br />
+                            Running: {data?.data?.ContainersRunning} <br />
+                            Paused:{data?.data?.ContainersPaused}  <br />
+                            Stopped:{data?.data?.ContainersStopped} <br />
+                            Images: {data?.data?.Images}  <br />
+                            Server Version: {data?.data?.ServerVersion}<br />
+                            Storage Driver: {data?.data?.Driver} br<br />
                             Driver Status: <br />
-                            {data?.DriverStatus.map((item, index) => <><b key={index}>{item}</b> <br /></>)}
-                            Logging Driver: {data?.LoggingDriver}  <br />
-                            Cgroup Driver: {data?.CgroupDriver} <br />
-                            Cgroup Version: {data?.CgroupVersion}  <br />
+                            {data?.data?.DriverStatus.map((item, index) => <><b key={index}>{item}</b> <br /></>)}
+                            Logging Driver: {data?.data?.LoggingDriver}  <br />
+                            Cgroup Driver: {data?.data?.CgroupDriver} <br />
+                            Cgroup Version: {data?.data?.CgroupVersion}  <br />
                             Plugins: <br />
-                            Volume: {data?.Plugins?.Volume.map((item, _index) => <u key={item}>{`${item} `}</u>)}  <br />
-                            Network: {data?.Plugins?.Network.map((item, _index) => <i key={item}>{`${item} `}</i>)}<br />
-                            Log: {data?.Plugins?.Log.map((item, _index) => <b key={item}>{`${item} `}</b>)}<br />
-                            Swarm: {data?.Swarm?.LocalNodeState}<br />
+                            Volume: {data?.data?.Plugins?.Volume.map((item, _index) => <u key={item}>{`${item} `}</u>)}  <br />
+                            Network: {data?.data?.Plugins?.Network.map((item, _index) => <i key={item}>{`${item} `}</i>)}<br />
+                            Log: {data?.data?.Plugins?.Log.map((item, _index) => <b key={item}>{`${item} `}</b>)}<br />
+                            Swarm: {data?.data?.Swarm?.LocalNodeState}<br />
                             Runtimes: ... <br />
                             Default Runtime: runc  <br />
-                            Init Binary: {data?.InitBinary}<br />
+                            Init Binary: {data?.data?.InitBinary}<br />
                             containerd version:<br />
                             runc version:  <br />
                             init version:  <br />
@@ -65,23 +65,23 @@ const Dashboard = () => {
                             seccomp
                             Profile: default br<br />
                             cgroupns
-                            Kernel Version: {data?.KernelVersion}  <br />
-                            Operating System: {data?.OperatingSystem}<br />
-                            OSType: {data?.OSType}  <br />
-                            Architecture: {data?.Architecture} <br />
-                            CPUs: {data?.NCPU}<br />
-                            Total Memory: {data?.MemTotal} <br />
-                            Name: {data?.Name} <br />
-                            ID: {data?.ID} <br />
-                            Docker Root Dir: {data?.DockerRootDir} <br />
+                            Kernel Version: {data?.data?.KernelVersion}  <br />
+                            Operating System: {data?.data?.OperatingSystem}<br />
+                            OSType: {data?.data?.OSType}  <br />
+                            Architecture: {data?.data?.Architecture} <br />
+                            CPUs: {data?.data?.NCPU}<br />
+                            Total Memory: {data?.data?.MemTotal} <br />
+                            Name: {data?.data?.Name} <br />
+                            ID: {data?.data?.ID} <br />
+                            Docker Root Dir: {data?.data?.DockerRootDir} <br />
                             Debug Mode: false <br />
-                            Registry: {data?.IndexServerAddress} <br />
+                            Registry: {data?.data?.IndexServerAddress} <br />
                             Labels: <br />
-                            Experimental: {data?.ExperimentalBuild} <br />
+                            Experimental: {data?.data?.ExperimentalBuild} <br />
                             Insecure Registries: <br />
-                            {data?.RegistryConfig?.InsecureRegistryCIDRs[0]} <br />
-                            Live Restore Enabled: {data?.LiveRestoreEnabled} <br />
-                            System time: {data?.SystemTime}
+                            {data?.data?.RegistryConfig?.InsecureRegistryCIDRs[0]} <br />
+                            Live Restore Enabled: {data?.data?.LiveRestoreEnabled} <br />
+                            System time: {data?.data?.SystemTime}
                         </Card>
                     </Grid>
                 </Grid>

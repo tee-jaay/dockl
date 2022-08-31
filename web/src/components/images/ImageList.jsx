@@ -38,7 +38,7 @@ const ImageList = () => {
     async function getImageList() {
         setIsLoading(true);
         const res = await eel.get_image_list(DockerCommands.PASSWORD_SUDO, DockerCommands.IMAGE_LIST)();
-        setImages(res);
+        setImages(res.data);
         setIsLoading(false);
     }
 
@@ -99,8 +99,6 @@ const ImageList = () => {
         setOpenNewImage(false);
     }
 
-    console.log(images);
-
     return (
         <Layout>
             {!isLoading && error && <AlertError />}
@@ -139,8 +137,6 @@ const ImageList = () => {
                                             <TableCell align="right">
                                                 <Stack direction={"row"} spacing={1}>
                                                     <Button startIcon={<RunContainerIcon />} variant='contained' size='small' color='info' sx={{ fontSize: '10px' }} onClick={() => handleClickOpen(image?.ID)}>Run</Button>
-                                                    {/* <Button startIcon={<InspectIcon />} variant='outlined' size='small' color='success' sx={{ fontSize: '10px' }} onClick={() => handleInspect(image?.ID)} >View</Button> */}
-                                                    {/* <Button startIcon={<DeleteForeverIcon />} variant='outlined' size='small' color='error' sx={{ fontSize: '10px' }} onDoubleClick={() => handleRemove(image?.ID)}>Remove</Button> */}
                                                     <InspectIcon sx={{ cursor: 'pointer' }} color='success' onClick={() => handleInspect(image?.ID)} />
                                                     <Tooltip title="double click">
                                                         <DeleteForeverIcon sx={{ cursor: 'pointer' }} color="error" onDoubleClick={() => handleRemove(image?.ID)} />

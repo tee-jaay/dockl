@@ -27,7 +27,8 @@ const ContainerList = () => {
 
     async function getContainerList() {
         const res = await eel.get_container_list(DockerCommands.PASSWORD_SUDO, DockerCommands.CONTAINER_LIST)();
-        setContainers(res);
+        console.log(res)
+        setContainers(res.data);
     }
 
     const handleContainerStart = async (containerId) => {
@@ -74,8 +75,6 @@ const ContainerList = () => {
         getContainerList();
         setIsLoading(false);
     };
-
-    console.log(containers && containers);
 
     return (
         <Layout>
