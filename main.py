@@ -5,6 +5,7 @@ from requests.exceptions import ConnectionError
 from helper.internet_connection_check import check_internet_connect
 
 from helper.port_get_free import port_get_free
+from helper.return_format import return_format
 
 from service.dashboard_data import dashboard_data
 from service.objects_data import objects_data
@@ -87,17 +88,14 @@ def image_search(keyword):
     search_url = "https://hub.docker.com/api/content/v1/products/search?q="
 
     url = search_url + keyword
-    # try:
-    if check_internet_connect():
+
+    if check_internet_connect() == False:
+        result = return_format(500, 'internet connection error', result)
+    else:
         response = requests.get(url)
         if response.status_code == 200:
-            result = response.json()
-            return result
-    else:
-        result = {"message": "No internet"}
-        return result
-    # except ConnectionError:
-    #     print("ConnectionError")
+            result = return_format(200, 'success', response.json())
+    return result
 
 
 @eel.expose
