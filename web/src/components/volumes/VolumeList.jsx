@@ -46,10 +46,11 @@ const VolumeList = () => {
             if (volumeId !== null) {
                 const res = await eel.volume_delete(password, command)();
                 if (res[0] === volumeId) {
-                    console.log(res[0], "volume delete success");
+                    setMessage("Volume deleted");
                 }
             }
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         getVolumeList();

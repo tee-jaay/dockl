@@ -51,8 +51,8 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_start(password, command)();
                 if (res[0] === containerId) {
-                    setSnackbarOpen(true);
                     setMessage("Container started");
+                    setSnackbarOpen(true);
                 }
             }
         } catch (error) {
@@ -72,8 +72,8 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_stop(password, command)();
                 if (res[0] === containerId) {
-                    setSnackbarOpen(true);
                     setMessage("Container stoped");
+                    setSnackbarOpen(true);
                 }
             }
         } catch (error) {
@@ -94,6 +94,7 @@ const ContainerList = () => {
                 const res = await eel.container_delete(password, command)();
                 if (res[0] === containerId) {
                     setMessage("Container deleted");
+                    setSnackbarOpen(true);
                 }
             }
         } catch (error) {
@@ -157,7 +158,8 @@ const ContainerList = () => {
             <StatusSnackbar
                 snackbarOpen={snackbarOpen}
                 message={message}
-                severity="success"
+                color={"info"}
+                severity="info"
                 handleSnackbarClose={handleSnackbarClose}
             />
         </Layout>
