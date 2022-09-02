@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Card, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Box, Card, CardHeader, Grid, Typography } from "@mui/material";
 import DockerCommands from '../../constants/commands';
-import Layout from '../../layouts/Layout'
+import Layout from '../../layouts/Layout';
 import ComponentHeader from '../inc/ComponentHeader';
 import AlertError from '../inc/AlertError';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
@@ -9,11 +9,15 @@ import ProgressBarLinear from '../inc/ProgressBarLinear';
 const Dashboard = () => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
     async function getDashboardData() {
-        const res = await eel.get_dashboard_data(DockerCommands.PASSWORD_SUDO, DockerCommands.DASHBOARD_DATA)();
-        setData(res);
+        try {
+            const res = await eel.get_dashboard_data(DockerCommands.PASSWORD_SUDO, DockerCommands.DASHBOARD_DATA)();
+            setData(res);
+        } catch (err) {
+            setError(err);
+        }
         setIsLoading(false);
     }
 
@@ -31,7 +35,8 @@ const Dashboard = () => {
             {!error && !isLoading && data &&
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Card sx={{ paddingX: '12px' }}>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
+                            ID: {data?.data?.ID} <br />
                             <strong>Client:</strong> <br />
                             Context:    {data?.data?.ClientInfo?.Context} <br />
                             Debug Mode:  {data?.data?.ClientInfo?.Debug} <br />
@@ -44,15 +49,10 @@ const Dashboard = () => {
                             Images: {data?.data?.Images}  <br />
                             Server Version: {data?.data?.ServerVersion}<br />
                             Storage Driver: {data?.data?.Driver} br<br />
-                            Driver Status: <br />
-                            {data?.data?.DriverStatus.map((item, index) => <><b key={index}>{item}</b> <br /></>)}
+
                             Logging Driver: {data?.data?.LoggingDriver}  <br />
                             Cgroup Driver: {data?.data?.CgroupDriver} <br />
                             Cgroup Version: {data?.data?.CgroupVersion}  <br />
-                            Plugins: <br />
-                            Volume: {data?.data?.Plugins?.Volume.map((item, _index) => <u key={item}>{`${item} `}</u>)}  <br />
-                            Network: {data?.data?.Plugins?.Network.map((item, _index) => <i key={item}>{`${item} `}</i>)}<br />
-                            Log: {data?.data?.Plugins?.Log.map((item, _index) => <b key={item}>{`${item} `}</b>)}<br />
                             Swarm: {data?.data?.Swarm?.LocalNodeState}<br />
                             Runtimes: ... <br />
                             Default Runtime: runc  <br />
@@ -60,11 +60,24 @@ const Dashboard = () => {
                             containerd version:<br />
                             runc version:  <br />
                             init version:  <br />
+                            Docker Root Dir: {data?.data?.DockerRootDir} <br />
+                            Debug Mode: false <br />
+                            Registry: {data?.data?.IndexServerAddress} <br />
+                        </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
+                            Plugins: <br />
+                            Volume: {data?.data?.Plugins?.Volume.map((item, _index) => <u key={item}>{`${item} `}</u>)}  <br />
+                            Network: {data?.data?.Plugins?.Network.map((item, _index) => <i key={item}>{`${item} `}</i>)}<br />
+                            Log: {data?.data?.Plugins?.Log.map((item, _index) => <b key={item}>{`${item} `}</b>)}<br />
+                        </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
                             Security Options:  <br />
-                            apparmor
-                            seccomp
+                            apparmor <br />
+                            seccomp <br />
+                        </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
                             Profile: default br<br />
-                            cgroupns
+                            cgroupns <br />
                             Kernel Version: {data?.data?.KernelVersion}  <br />
                             Operating System: {data?.data?.OperatingSystem}<br />
                             OSType: {data?.data?.OSType}  <br />
@@ -72,22 +85,26 @@ const Dashboard = () => {
                             CPUs: {data?.data?.NCPU}<br />
                             Total Memory: {data?.data?.MemTotal} <br />
                             Name: {data?.data?.Name} <br />
-                            ID: {data?.data?.ID} <br />
-                            Docker Root Dir: {data?.data?.DockerRootDir} <br />
-                            Debug Mode: false <br />
-                            Registry: {data?.data?.IndexServerAddress} <br />
+                        </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
                             Labels: <br />
                             Experimental: {data?.data?.ExperimentalBuild} <br />
+                        </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
                             Insecure Registries: <br />
                             {data?.data?.RegistryConfig?.InsecureRegistryCIDRs[0]} <br />
                             Live Restore Enabled: {data?.data?.LiveRestoreEnabled} <br />
                             System time: {data?.data?.SystemTime}
                         </Card>
+                        <Card sx={{ paddingX: '12px', marginBottom: '16px' }}>
+                            Driver Status: <br />
+                            {data?.data?.DriverStatus.map((item, index) => <><b key={index}>{item}</b> <br /></>)}
+                        </Card>
                     </Grid>
                 </Grid>
             }
         </Layout>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;

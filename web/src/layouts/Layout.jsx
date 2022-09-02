@@ -15,7 +15,7 @@ function Layout({ children }) {
         <Sidebar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
-          <Box component={Paper}>
+          <Box>
             {children}
           </Box>
         </Box>

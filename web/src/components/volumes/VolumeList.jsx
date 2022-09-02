@@ -31,6 +31,7 @@ const VolumeList = () => {
             console.log(res);
             setVolumes(res.data);
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         setIsLoading(false);
@@ -63,7 +64,7 @@ const VolumeList = () => {
             {!isLoading && !error && volumes &&
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TableContainer>
+                        <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow>

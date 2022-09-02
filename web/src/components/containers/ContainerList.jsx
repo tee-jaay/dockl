@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -112,7 +112,7 @@ const ContainerList = () => {
             {!isLoading && !error &&
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TableContainer>
+                        <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow>

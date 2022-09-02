@@ -118,7 +118,7 @@ const ImageList = () => {
             {!isLoading && !error && images &&
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={12}>
-                        <TableContainer>
+                        <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow>
