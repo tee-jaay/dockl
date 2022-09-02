@@ -41,6 +41,7 @@ const ImageList = () => {
             const res = await eel.get_image_list(DockerCommands.PASSWORD_SUDO, DockerCommands.IMAGE_LIST)();
             setImages(res.data);
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         setIsLoading(false);
@@ -76,6 +77,7 @@ const ImageList = () => {
             const res = await eel.container_run(password, command)();
             console.log("handleContainerRun", res);
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         setImageName(null);
@@ -97,6 +99,7 @@ const ImageList = () => {
             const res = await eel.image_destroy(password, command)();
             console.log({ res });
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         setImages([]);
