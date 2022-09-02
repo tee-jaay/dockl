@@ -22,17 +22,25 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
     const [imagesSummaries, setImagesSummaries] = React.useState([]);
     const [imagesCount, setImagesCount] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [error, setError] = React.useState(null)
+    const [error, setError] = React.useState(null);
 
-    const searchKeyword = async () => {
-        if (keyword.length > 3) {
-            setIsLoading(true);
-            let res = await eel.image_search(keyword)();
-            setImagesCount(res?.count);
-            setImagesSummaries(res?.summaries);
-            setIsLoading(false);
+    const searchByKeyword = async () => {
+        try {
+            if (keyword.length > 3) {
+                setIsLoading(true);
+                let res = await eel.image_search(keyword)();
+                console.log({ res });
+                setImagesCount(res?.data?.count);
+                setImagesSummaries(res?.data?.summaries);
+                if (res.status === 500) {
+                    setError(res.message);
+                }
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
 
     return (
         <Dialog
@@ -59,7 +67,7 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
                         <TextField
                             value={keyword}
                             onChange={e => setKeyword(e.target.value)}
-                            onKeyUp={searchKeyword}
+                            onKeyUp={searchByKeyword}
                             focused
                             fullWidth
                             size="small"
@@ -83,7 +91,7 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
 
             {isLoading && <ProgressBarLinear />}
 
-            {error && !isLoading && <AlertError />}
+            {error && !isLoading && <AlertError errorMessage={error} />}
 
             {!error && !isLoading && imagesSummaries &&
                 <SearchResult
@@ -92,7 +100,7 @@ const NewImage = ({ openNewImage, handleClickNewImageClose, }) => {
                 />
             }
         </Dialog>
-    )
-}
+    );
+};
 
-export default NewImage
+export default NewImage;

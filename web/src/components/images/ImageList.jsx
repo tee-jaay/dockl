@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,7 +10,7 @@ import RunContainerIcon from '@mui/icons-material/ForwardTwoTone';
 import InspectIcon from '@mui/icons-material/RemoveRedEye';
 import NewImageIcon from '@mui/icons-material/AddToQueue';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import Layout from '../../layouts/Layout'
+import Layout from '../../layouts/Layout';
 import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import FormRun from './run/FormRun';
@@ -33,12 +33,16 @@ const ImageList = () => {
 
     useEffect(() => {
         getImageList();
-    }, [])
+    }, []);
 
     async function getImageList() {
         setIsLoading(true);
-        const res = await eel.get_image_list(DockerCommands.PASSWORD_SUDO, DockerCommands.IMAGE_LIST)();
-        setImages(res);
+        try {
+            const res = await eel.get_image_list(DockerCommands.PASSWORD_SUDO, DockerCommands.IMAGE_LIST)();
+            setImages(res.data);
+        } catch (error) {
+            console.log(error);
+        }
         setIsLoading(false);
     }
 
@@ -53,7 +57,7 @@ const ImageList = () => {
     };
 
     const handleContainerRun = async () => {
-        console.log({ imageName })
+        console.log({ imageName });
         let newPorts;
         setOpen(false);
         setIsLoading(true);
@@ -68,8 +72,12 @@ const ImageList = () => {
         const command = `${DockerCommands.CONTAINER_RUN} --name ${newContainerName} ${newPorts} -d ${imageName}`;
         const password = DockerCommands.PASSWORD_SUDO;
         console.log(command);
-        const res = await eel.container_run(password, command)();
-        console.log("handleContainerRun", res)
+        try {
+            const res = await eel.container_run(password, command)();
+            console.log("handleContainerRun", res);
+        } catch (error) {
+            console.log(error);
+        }
         setImageName(null);
         getImageList();
         setIsLoading(false);
@@ -77,7 +85,7 @@ const ImageList = () => {
 
     const handleInspect = (id) => {
         console.log("handleInspect", id);
-    }
+    };
 
     const handleRemove = async (imageId) => {
         console.log("handleRemove", imageId);
@@ -85,21 +93,23 @@ const ImageList = () => {
         const command = `${DockerCommands.IMAGE_REMOVE} ${imageId}`;
         const password = DockerCommands.PASSWORD_SUDO;
         console.log(command);
-        const res = await eel.image_destroy(password, command)();
-        console.log({ res });
+        try {
+            const res = await eel.image_destroy(password, command)();
+            console.log({ res });
+        } catch (error) {
+            console.log(error);
+        }
         setImages([]);
         getImageList();
         setIsLoading(false);
-    }
+    };
 
     const handleClickNewImageOpen = () => {
         setOpenNewImage(true);
-    }
+    };
     const handleClickNewImageClose = () => {
         setOpenNewImage(false);
-    }
-
-    console.log(images);
+    };
 
     return (
         <Layout>
@@ -108,7 +118,7 @@ const ImageList = () => {
             {!isLoading && !error && images &&
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={12}>
-                        <TableContainer>
+                        <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -139,8 +149,6 @@ const ImageList = () => {
                                             <TableCell align="right">
                                                 <Stack direction={"row"} spacing={1}>
                                                     <Button startIcon={<RunContainerIcon />} variant='contained' size='small' color='info' sx={{ fontSize: '10px' }} onClick={() => handleClickOpen(image?.ID)}>Run</Button>
-                                                    {/* <Button startIcon={<InspectIcon />} variant='outlined' size='small' color='success' sx={{ fontSize: '10px' }} onClick={() => handleInspect(image?.ID)} >View</Button> */}
-                                                    {/* <Button startIcon={<DeleteForeverIcon />} variant='outlined' size='small' color='error' sx={{ fontSize: '10px' }} onDoubleClick={() => handleRemove(image?.ID)}>Remove</Button> */}
                                                     <InspectIcon sx={{ cursor: 'pointer' }} color='success' onClick={() => handleInspect(image?.ID)} />
                                                     <Tooltip title="double click">
                                                         <DeleteForeverIcon sx={{ cursor: 'pointer' }} color="error" onDoubleClick={() => handleRemove(image?.ID)} />
@@ -179,7 +187,7 @@ const ImageList = () => {
                 handleClickNewImageClose={handleClickNewImageClose}
             />
         </Layout>
-    )
-}
+    );
+};
 
 export default ImageList;

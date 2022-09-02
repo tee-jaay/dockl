@@ -56,16 +56,21 @@ function SearchResult({ imagesSummaries, imagesCount }) {
     };
 
     const handleClickPull = async (imageSlug) => {
-        console.log(imageSlug)
+        console.log(imageSlug);
         setIsLoading(true);
         console.log(isLoading);
         const command = `${DockerCommands.IMAGE_PULL} ${imageSlug}`;
         const password = DockerCommands.PASSWORD_SUDO;
-        const res = await eel.image_pull(password, command)();
+        try {
+            const res = await eel.image_pull(password, command)();
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
         setIsLoading(false);
         console.log(isLoading);
         console.log({ res });
-    }
+    };
 
     const pullButton = (slug) => {
         if (isLoading) {
@@ -79,7 +84,7 @@ function SearchResult({ imagesSummaries, imagesCount }) {
                 onClick={() => handleClickPull(slug)}
             >
                 Pull
-            </LoadingButton>
+            </LoadingButton>;
         } else {
             return <LoadingButton
                 startIcon={<CloudDownloadIcon />}
@@ -89,9 +94,9 @@ function SearchResult({ imagesSummaries, imagesCount }) {
                 onClick={() => handleClickPull(slug)}
             >
                 Pull
-            </LoadingButton>
+            </LoadingButton>;
         }
-    }
+    };
 
     console.log(imagesSummaries && imagesSummaries);
 
