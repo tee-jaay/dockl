@@ -14,12 +14,18 @@ import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
 import AlertError from '../inc/AlertError';
+import StatusSnackbar from '../inc/StatusSnackbar';
 
 const ContainerList = () => {
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [containers, setContainers] = useState([]);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState(null);
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     useEffect(() => {
         getContainerList();
@@ -31,6 +37,7 @@ const ContainerList = () => {
             console.log(res);
             setContainers(res.data);
         } catch (error) {
+            setError(error);
             console.log(error);
         }
     }
@@ -44,10 +51,12 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_start(password, command)();
                 if (res[0] === containerId) {
-                    console.log(res[0], "container start success");
+                    setSnackbarOpen(true);
+                    setMessage("Container started");
                 }
             }
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         getContainerList();
@@ -63,11 +72,13 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_stop(password, command)();
                 if (res[0] === containerId) {
-                    console.log(res[0], "container stop success");
+                    setSnackbarOpen(true);
+                    setMessage("Container stoped");
                 }
             }
         } catch (error) {
             console.log(error);
+            setError(error);
         }
         getContainerList();
         setIsLoading(false);
@@ -82,10 +93,11 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_delete(password, command)();
                 if (res[0] === containerId) {
-                    console.log(res[0], "container delete success");
+                    setMessage("Container deleted");
                 }
             }
         } catch (error) {
+            setError(error);
             console.log(error);
         }
         getContainerList();
@@ -142,6 +154,12 @@ const ContainerList = () => {
                     </Grid>
                 </Grid>
             }
+            <StatusSnackbar
+                snackbarOpen={snackbarOpen}
+                message={message}
+                severity="success"
+                handleSnackbarClose={handleSnackbarClose}
+            />
         </Layout>
     );
 };
