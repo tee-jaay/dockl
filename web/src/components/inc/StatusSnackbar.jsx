@@ -7,7 +7,7 @@ const StatusSnackbar = ({ color, snackbarOpen, message, severity, handleSnackbar
             open={snackbarOpen}
             onClose={handleSnackbarClose}
             autoHideDuration={3000}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             sx={{ border: '1px solid #dedede' }}
         >
             <Alert color={color} severity={severity} sx={{ width: '100%' }}>

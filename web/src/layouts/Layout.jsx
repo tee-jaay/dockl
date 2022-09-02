@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { Paper, Toolbar } from "@mui/material";
+import { Toolbar } from "@mui/material";
 
 function Layout({ children }) {
   return (
