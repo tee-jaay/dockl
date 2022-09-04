@@ -2,7 +2,7 @@
 
 A Python EEL and React.js build Docker management app for Linux Distros.
 
-![images list page](https://res.cloudinary.com/jtam/image/upload/v1661705899/apps/dockl/images/page-images.jpg)  
+![images list page](https://res.cloudinary.com/jtam/image/upload/v1662283235/apps/dockl/images/dockl-dark.jpg)  
 
 ## Installation
 
