@@ -9,6 +9,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import DockerCommands from '../../../constants/commands';
+import StatusSnackbar from '../../inc/StatusSnackbar';
 
 
 const Accordion = styled((props) => (
@@ -50,6 +51,15 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 function SearchResult({ imagesSummaries, imagesCount }) {
     const [expanded, setExpanded] = React.useState('panel1');
     const [isLoading, setIsLoading] = React.useState(false);
+    const [snackbarObj, setSnackbarObj] = React.useState({
+        snackbarOpen: false,
+        message: null,
+        color: null,
+        severity: null
+    });
+    const handleSnackbarClose = () => {
+        setSnackbarObj({ snackbarOpen: false });
+    };
 
     const handleChange = (panel) => (_event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
@@ -63,13 +73,20 @@ function SearchResult({ imagesSummaries, imagesCount }) {
         const password = DockerCommands.PASSWORD_SUDO;
         try {
             const res = await eel.image_pull(password, command)();
+            if (res) {
+                setSnackbarObj({
+                    snackbarOpen: true,
+                    message: "Image pull success",
+                    color: 'info',
+                    severity: 'info'
+                });
+            }
             console.log(res);
         } catch (error) {
             console.log(error);
         }
         setIsLoading(false);
         console.log(isLoading);
-        console.log({ res });
     };
 
     const pullButton = (slug) => {
@@ -140,6 +157,11 @@ function SearchResult({ imagesSummaries, imagesCount }) {
                     </Accordion>
                 )}
             </Box>
+
+            <StatusSnackbar
+                snackbarObj={snackbarObj}
+                handleSnackbarClose={handleSnackbarClose}
+            />
         </Box>
     );
 }

@@ -18,6 +18,7 @@ import AlertError from '../inc/AlertError';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
 import { faker } from '@faker-js/faker';
 import NewImage from './new/NewImage';
+import StatusSnackbar from '../inc/StatusSnackbar';
 
 const ImageList = () => {
     const [open, setOpen] = useState(false);
@@ -30,6 +31,16 @@ const ImageList = () => {
     const [containerName, setContainerName] = useState(null);
     const [portLocal, setPortLocal] = useState(null);
     const [portContainer, setPortContainer] = useState(null);
+
+    const [snackbarObj, setSnackbarObj] = useState({
+        snackbarOpen: false,
+        message: null,
+        color: null,
+        severity: null
+    });
+    const handleSnackbarClose = () => {
+        setSnackbarObj({ snackbarOpen: false });
+    };
 
     useEffect(() => {
         getImageList();
@@ -76,6 +87,14 @@ const ImageList = () => {
         try {
             const res = await eel.container_run(password, command)();
             console.log("handleContainerRun", res);
+            if (res) {
+                setSnackbarObj({
+                    snackbarOpen: true,
+                    message: "Image run success",
+                    color: 'success',
+                    severity: 'success'
+                });
+            }
         } catch (error) {
             setError(error);
             console.log(error);
@@ -97,6 +116,14 @@ const ImageList = () => {
         console.log(command);
         try {
             const res = await eel.image_destroy(password, command)();
+            if (res) {
+                setSnackbarObj({
+                    snackbarOpen: true,
+                    message: "Image delete success",
+                    color: 'error',
+                    severity: 'error'
+                });
+            }
             console.log({ res });
         } catch (error) {
             setError(error);
@@ -188,6 +215,11 @@ const ImageList = () => {
             <NewImage
                 openNewImage={openNewImage}
                 handleClickNewImageClose={handleClickNewImageClose}
+            />
+
+            <StatusSnackbar
+                snackbarObj={snackbarObj}
+                handleSnackbarClose={handleSnackbarClose}
             />
         </Layout>
     );

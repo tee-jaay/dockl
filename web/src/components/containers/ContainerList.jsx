@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Grid, Paper, Stack, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,21 +10,24 @@ import PlayIcon from '@mui/icons-material/PlayCircleFilledTwoTone';
 import StopIcon from '@mui/icons-material/StopCircleTwoTone';
 import DeleteIcon from '@mui/icons-material/HighlightOffTwoTone';
 import Layout from '../../layouts/Layout';
-import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
 import AlertError from '../inc/AlertError';
 import StatusSnackbar from '../inc/StatusSnackbar';
 
 const ContainerList = () => {
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-    const [containers, setContainers] = useState([]);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState(null);
+    const [containers, setContainers] = useState([]);
+    const [snackbarObj, setSnackbarObj] = useState({
+        snackbarOpen: false,
+        message: null,
+        color: null,
+        severity: null
+    });
 
     const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
+        setSnackbarObj({ snackbarOpen: false });
     };
 
     useEffect(() => {
@@ -34,7 +37,7 @@ const ContainerList = () => {
     async function getContainerList() {
         try {
             const res = await eel.get_container_list(DockerCommands.PASSWORD_SUDO, DockerCommands.CONTAINER_LIST)();
-            console.log(res);
+            // console.log(res);
             setContainers(res.data);
         } catch (error) {
             setError(error);
@@ -51,8 +54,12 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_start(password, command)();
                 if (res[0] === containerId) {
-                    setMessage("Container started");
-                    setSnackbarOpen(true);
+                    setSnackbarObj({
+                        snackbarOpen: true,
+                        message: "Container start success",
+                        color: 'success',
+                        severity: 'success'
+                    });
                 }
             }
         } catch (error) {
@@ -72,8 +79,12 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_stop(password, command)();
                 if (res[0] === containerId) {
-                    setMessage("Container stoped");
-                    setSnackbarOpen(true);
+                    setSnackbarObj({
+                        snackbarOpen: true,
+                        message: "Container stop success",
+                        color: 'warning',
+                        severity: 'warning'
+                    });
                 }
             }
         } catch (error) {
@@ -93,8 +104,12 @@ const ContainerList = () => {
             if (containerId !== null) {
                 const res = await eel.container_delete(password, command)();
                 if (res[0] === containerId) {
-                    setMessage("Container deleted");
-                    setSnackbarOpen(true);
+                    setSnackbarObj({
+                        snackbarOpen: true,
+                        message: "Container delete success",
+                        color: 'error',
+                        severity: 'error'
+                    });
                 }
             }
         } catch (error) {
@@ -156,10 +171,7 @@ const ContainerList = () => {
                 </Grid>
             }
             <StatusSnackbar
-                snackbarOpen={snackbarOpen}
-                message={message}
-                color={"info"}
-                severity="info"
+                snackbarObj={snackbarObj}
                 handleSnackbarClose={handleSnackbarClose}
             />
         </Layout>

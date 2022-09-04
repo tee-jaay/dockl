@@ -13,12 +13,21 @@ import ComponentHeader from '../inc/ComponentHeader';
 import DockerCommands from '../../constants/commands';
 import AlertError from '../inc/AlertError';
 import ProgressBarLinear from '../inc/ProgressBarLinear';
+import StatusSnackbar from '../inc/StatusSnackbar';
 
 const VolumeList = () => {
-    const [volumes, setVolumes] = useState([]);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState(null);
+    const [volumes, setVolumes] = useState([]);
+    const [snackbarObj, setSnackbarObj] = useState({
+        snackbarOpen: false,
+        message: null,
+        color: null,
+        severity: null
+    });
+    const handleSnackbarClose = () => {
+        setSnackbarObj({ snackbarOpen: false });
+    };
 
     useEffect(() => {
         getVolumeList();
@@ -46,7 +55,12 @@ const VolumeList = () => {
             if (volumeId !== null) {
                 const res = await eel.volume_delete(password, command)();
                 if (res[0] === volumeId) {
-                    setMessage("Volume deleted");
+                    setSnackbarObj({
+                        snackbarOpen: true,
+                        message: "Volume delete success",
+                        color: 'error',
+                        severity: 'error'
+                    });
                 }
             }
         } catch (error) {
@@ -112,8 +126,11 @@ const VolumeList = () => {
                         </TableContainer>
                     </Grid>
                 </Grid>
-
             }
+            <StatusSnackbar
+                snackbarObj={snackbarObj}
+                handleSnackbarClose={handleSnackbarClose}
+            />
         </Layout>
     );
 };

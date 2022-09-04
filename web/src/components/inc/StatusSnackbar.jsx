@@ -1,7 +1,11 @@
-import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
+import { Alert, Snackbar } from '@mui/material';
 
-const StatusSnackbar = ({ color, snackbarOpen, message, severity, handleSnackbarClose }) => {
+const StatusSnackbar = ({ snackbarObj, handleSnackbarClose }) => {
+    if (import.meta.env.PROD) {
+        console.log(snackbarObj);
+    }
+    const { color, snackbarOpen, message, severity } = snackbarObj;
     return (
         <Snackbar
             open={snackbarOpen}
